@@ -1,3 +1,5 @@
+import pickle
+
 with open('lexicon', 'r') as f:
     SECTIONS = ['ortho', 'id', 'part', 'pron', 'ertho', 'freq']
     lexicon = []
@@ -58,6 +60,11 @@ for entry in lexicon:
                     syl.append(sect)
                     sect = []
                     vowel = False if vowel else True
+                elif token[-1] == '!':
+                    syl.append(sect)
+                    syl.append(['@'])
+                    sect = []
+                    token = token[:-1]
                 sect.append(token)
                 token = ''
             continue
@@ -89,3 +96,6 @@ for entry in lexicon:
     newEntry['ertho'] = word
 
     lex.append(newEntry)
+
+with open('lexicon_f', 'wb') as fp:
+    pickle.dump(lex, fp)
